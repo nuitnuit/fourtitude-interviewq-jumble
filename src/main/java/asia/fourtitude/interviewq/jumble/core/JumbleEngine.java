@@ -1,9 +1,27 @@
 package asia.fourtitude.interviewq.jumble.core;
 
-import java.io.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+
+import asia.fourtitude.interviewq.jumble.resource.StringRowsResource;
 
 public class JumbleEngine {
+	private static final List<String> palindromeWords;
+	private static final RandomWordPicker randomWordPicker;
+	private static final WordExistentialityChecker existentialityChecker;
+	private static final PrefixWordsRetriever prefixWordsRetriever;
+	private static final WordSearcher wordSearcher;
+	static {
+		List<String> rawWordList = StringRowsResource.GAME_WORDS.getResource();
+		palindromeWords = new PalindromeChecker().filterPalindromes(rawWordList);
+		randomWordPicker = new RandomWordPicker(rawWordList);
+		existentialityChecker = new WordExistentialityChecker(StringComparatorMode.CASE_INSENSITIVE, rawWordList);
+		prefixWordsRetriever = new PrefixWordsRetriever(StringComparatorMode.CASE_INSENSITIVE, rawWordList);
+		wordSearcher = new WordSearcher(StringComparatorMode.CASE_INSENSITIVE, rawWordList);
+	}
 
     /**
      * From the input `word`, produces/generates a copy which has the same
@@ -18,13 +36,9 @@ public class JumbleEngine {
      * @param word  The input word to scramble the letters.
      * @return  The scrambled output/letters.
      */
-    public String scramble(String word) {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
-    }
+	public String scramble(String word) {
+		return new StringScrambler().scramble(word);
+	}
 
     /**
      * Retrieves the palindrome words from the internal
@@ -44,11 +58,7 @@ public class JumbleEngine {
      * @see https://www.google.com/search?q=palindrome+meaning
      */
     public Collection<String> retrievePalindromeWords() {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
+    	return palindromeWords;
     }
 
     /**
@@ -64,11 +74,7 @@ public class JumbleEngine {
      *          Or null if none matching.
      */
     public String pickOneRandomWord(Integer length) {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
+    	return randomWordPicker.getFromLength(length).orElse(null);
     }
 
     /**
@@ -84,11 +90,7 @@ public class JumbleEngine {
      * @return  true if `word` exists in internal word list.
      */
     public boolean exists(String word) {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
+    	return existentialityChecker.exists(word);
     }
 
     /**
@@ -108,11 +110,7 @@ public class JumbleEngine {
      * @return  The list of words matching the prefix.
      */
     public Collection<String> wordsMatchingPrefix(String prefix) {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
+    	return prefixWordsRetriever.of(prefix);
     }
 
     /**
@@ -140,11 +138,7 @@ public class JumbleEngine {
      * @return  The list of words matching the searching criteria.
      */
     public Collection<String> searchWords(Character startChar, Character endChar, Integer length) {
-        /*
-         * Refer to the method's Javadoc (above) and implement accordingly.
-         * Must pass the corresponding unit tests.
-         */
-        throw new UnsupportedOperationException("to be implemented");
+    	return wordSearcher.search(startChar, endChar, length);
     }
 
     /**
